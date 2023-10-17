@@ -24,7 +24,7 @@ jobs:
           pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client PyPDF2
 
       - name: Write credentials to file
-        run: echo "${{ secrets.BASE64_CREDENTIALS_JSON }}" | base64 -d > credentials.json
+        run: echo "${{ secrets.BASE64_CREDENTIALS_JSON }}" | base64 -d > /home/runner/work/credentials.json
 
       - name: Run script
         run: python main.py
