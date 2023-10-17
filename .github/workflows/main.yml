@@ -31,5 +31,3 @@ jobs:
 
       - name: Run script
         run: python main.py
-        env:
-          USER_EMAIL: ${{ secrets.USER_EMAIL }}

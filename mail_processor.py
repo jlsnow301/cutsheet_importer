@@ -45,3 +45,11 @@ def extract_attachments_from_message(message_id):
                 data = att["data"]
             file_data = base64.urlsafe_b64decode(data.encode("UTF-8"))
             return io.BytesIO(file_data)
+
+
+def mark_email_as_read(user_id, msg_id):
+    service = get_gmail_service()
+
+    service.users().messages().modify(
+        userId=user_id, id=msg_id, body={"removeLabelIds": ["UNREAD"]}
+    ).execute()
