@@ -23,7 +23,8 @@ jobs:
           pip install --upgrade pip
           pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client PyPDF2
 
+      - name: Write credentials to file
+        run: echo "${{ secrets.CREDENTIALS_JSON }}" > credentials.json
+
       - name: Run script
         run: python main.py
-        env:
-          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
