@@ -1,5 +1,9 @@
+from calendar_event import create_calendar_event
 from mail_processor import fetch_unread_emails, extract_attachments_from_message
 from pdf_reader import extract_text_from_pdf, parse_email
+import os
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
 messages = fetch_unread_emails()
 
@@ -11,6 +15,6 @@ for message in messages:
             pdf_text = extract_text_from_pdf(pdf_path)
             details = parse_email(pdf_text)
 
-            print(details)
+            create_calendar_event(details)
         except Exception as e:
             print(f"Error processing PDF from message ID {message['id']}: {e}")

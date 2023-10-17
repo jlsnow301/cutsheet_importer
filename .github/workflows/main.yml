@@ -1,0 +1,28 @@
+name: Process Emails and Add to Calendar
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # This will run daily at midnight. Adjust as needed.
+
+jobs:
+  process_emails:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11 # or whatever version you're using
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client PyPDF2
+
+      - name: Run script
+        run: python main.py
+        env:
+          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}

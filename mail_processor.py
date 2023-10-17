@@ -1,6 +1,6 @@
-import base64
 from auth_service import get_gmail_service
 from datetime import datetime, timedelta
+import base64
 import io
 
 
