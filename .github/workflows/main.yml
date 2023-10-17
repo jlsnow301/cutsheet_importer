@@ -2,7 +2,7 @@ name: Process Emails and Add to Calendar
 
 on:
   schedule:
-    - cron: "0 0 * * *" # This will run daily at midnight. Adjust as needed.
+    - cron: "0 0 * * *"
 
 jobs:
   process_emails:
@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.11 # or whatever version you're using
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
