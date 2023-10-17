@@ -27,5 +27,9 @@ jobs:
         run: |
           echo "${{ secrets.CREDENTIALS_JSON }}" > /home/runner/work/credentials.json
 
+      - name: Debug - Print credentials.json content
+        run: |
+          cat /home/runner/work/credentials.json
+
       - name: Run script
         run: python main.py
