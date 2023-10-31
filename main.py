@@ -1,26 +1,32 @@
+import os
+import json
 from calendar_event import create_calendar_event
 from mail_processor import (
     fetch_unread_emails,
     extract_attachments_from_message,
     mark_email_as_read,
 )
-from pdf_reader import extract_text_from_pdf, parse_email
-import os
+from csv_reader import extract_events_from_csv_bytes
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+
+DELIVERY_PERSONS = json.loads(os.environ.get("DELIVERY_PERSONS", "{}"))
 
 messages = fetch_unread_emails()
 
 for message in messages:
-    pdf_path = extract_attachments_from_message(message["id"])
-    
-    if pdf_path:
-        try:
-            pdf_text = extract_text_from_pdf(pdf_path)
-            details = parse_email(pdf_text)
+    csv_path = extract_attachments_from_message(message["id"])
 
-            create_calendar_event(details)
+    if csv_path:
+        try:
+            events_data = extract_events_from_csv_bytes(csv_path)
+
+            for details in events_data:
+                delivery_person = details.get("Delivery Person")
+
+                if delivery_person in DELIVERY_PERSONS:
+                    create_calendar_event(details)
 
             mark_email_as_read("me", message["id"])
         except Exception as e:
-            print(f"Error processing PDF from message ID {message['id']}: {e}")
+            print(f"Error processing CSV from message ID {message['id']}: {e}")

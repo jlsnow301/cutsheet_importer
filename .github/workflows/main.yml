@@ -3,7 +3,7 @@ name: Process Emails and Add to Calendar
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 2 * * *"
 
 jobs:
   process_emails:
@@ -30,4 +30,6 @@ jobs:
         run: echo "${{ secrets.PICKLE_TOKEN }}" | base64 -d > token.pickle
 
       - name: Run script
+        env:
+          DELIVERY_PERSONS: ${{ secrets.DELIVERY_PERSONS }}
         run: python main.py

@@ -1,13 +1,22 @@
+import json
+import os
+
 from auth_service import get_calendar_service
 
 
+def get_delivery_person_email(name):
+    delivery_persons = json.loads(os.environ.get("DELIVERY_PERSONS", "{}"))
+    return delivery_persons.get(name)
+
+
 def create_calendar_event(details):
+    delivery_person_email = get_delivery_person_email(details.get("Delivery Person"))
+
     calendar_service = get_calendar_service()
 
     event = {
         "summary": details["event_name"],
-        "location": details["site_address"],
-        "description": f"Headcount: {details['headcount']}. Contact Phone: {details['site_telephone']}",
+        "description": f"Client: {details.get('client', '')}. Headcount: {details.get('headcount', '')}.",
         "start": {
             "dateTime": details["ready_by_time"],
             "timeZone": "America/Los_Angeles",
@@ -16,6 +25,8 @@ def create_calendar_event(details):
             "dateTime": details["start_time"],
             "timeZone": "America/Los_Angeles",
         },
+        "attendees": [{"email": delivery_person_email}],
+        "visibility": "private",
     }
 
     event = calendar_service.events().insert(calendarId="primary", body=event).execute()

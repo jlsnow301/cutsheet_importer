@@ -9,7 +9,8 @@ def fetch_unread_emails():
 
     three_days_ago = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
 
-    query = f"is:unread after:{three_days_ago} subject:'CUT SHEET for'"
+    # Update the search query
+    query = f"is:unread after:{three_days_ago} subject:'Catering Schedule'"
 
     results = (
         service.users()
@@ -26,11 +27,14 @@ def extract_attachments_from_message(message_id):
     msg = service.users().messages().get(userId="me", id=message_id).execute()
 
     parts = [msg["payload"]]
+    file_data = None
     while parts:
         part = parts.pop()
         if part.get("parts"):
             parts.extend(part["parts"])
-        if part["filename"] and part["filename"].endswith(".pdf"):
+        filename = part.get("filename", "")
+        # Look for attachments that are CSV and start with "Catering Schedule"
+        if filename.startswith("Catering-Schedule") and filename.endswith(".csv"):
             if "data" in part["body"]:
                 data = part["body"]["data"]
             else:
@@ -44,7 +48,10 @@ def extract_attachments_from_message(message_id):
                 )
                 data = att["data"]
             file_data = base64.urlsafe_b64decode(data.encode("UTF-8"))
-            return io.BytesIO(file_data)
+            break
+
+    if file_data:
+        return io.BytesIO(file_data)
 
 
 def mark_email_as_read(user_id, msg_id):
