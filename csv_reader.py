@@ -22,8 +22,8 @@ def parse_event(row):
     if "Delivery Person" in row:
         data["Delivery Person"] = row["Delivery Person"].strip()
 
-    if "Kitchen Ready by" in row:
-        data["ready_by_time"] = row["Kitchen Ready by"].strip()
+    if "Kitchen Ready by " in row:
+        data["ready_by_time"] = row["Kitchen Ready by "].strip()
 
     if "Setup By" in row:
         data["start_time"] = row["Setup By"].strip()
