@@ -8,6 +8,7 @@ def extract_events_from_csv_bytes(csv_bytes):
     csv_reader = csv.DictReader(csv_content.splitlines())
     for row in csv_reader:
         events.append(row)
+
     return events
 
 
@@ -17,6 +18,9 @@ def parse_event(row):
 
     if "Date" in row:
         event_date = row["Date"]
+
+    if "Delivery Person" in row:
+        data["Delivery Person"] = row["Delivery Person"].strip()
 
     if "Kitchen Ready by" in row:
         data["ready_by_time"] = row["Kitchen Ready by"].strip()

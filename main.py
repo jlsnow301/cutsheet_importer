@@ -6,7 +6,7 @@ from mail_processor import (
     extract_attachments_from_message,
     mark_email_as_read,
 )
-from csv_reader import extract_events_from_csv_bytes
+from csv_reader import extract_events_from_csv_bytes, parse_event
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
@@ -19,13 +19,13 @@ for message in messages:
 
     if csv_path:
         try:
-            events_data = extract_events_from_csv_bytes(csv_path)
+            raw_events = extract_events_from_csv_bytes(csv_path)
 
-            for details in events_data:
-                delivery_person = details.get("Delivery Person")
+            parsed_events = [parse_event(event) for event in raw_events]
 
-                if delivery_person in DELIVERY_PERSONS:
-                    create_calendar_event(details)
+            for event in parsed_events:
+                if event["Delivery Person"] in DELIVERY_PERSONS:
+                    create_calendar_event(event)
 
             mark_email_as_read("me", message["id"])
         except Exception as e:
