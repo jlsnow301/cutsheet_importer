@@ -13,7 +13,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 DELIVERY_PERSONS = json.loads(os.environ.get("DELIVERY_PERSONS", "{}"))
 
 messages = fetch_unread_emails()
-# if no messages print no messages
+
 if not messages:
     print("No messages found.")
 

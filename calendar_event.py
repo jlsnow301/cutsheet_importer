@@ -16,7 +16,8 @@ def create_calendar_event(details):
 
     event = {
         "summary": details["event_name"],
-        "description": f"Client: {details.get('client', '')}. Headcount: {details.get('headcount', '')}.",
+        "description": f"Client: {details.get('Client/Organization', '')}. Headcount: {details.get('Actual', '')}.",
+        "location": details["Site Address"],
         "start": {
             "dateTime": details["ready_by_time"],
             "timeZone": "America/Los_Angeles",
