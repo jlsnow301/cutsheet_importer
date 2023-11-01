@@ -13,11 +13,12 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 DELIVERY_PERSONS = json.loads(os.environ.get("DELIVERY_PERSONS", "{}"))
 
 messages = fetch_unread_emails()
-
+# if no messages print no messages
+if not messages:
+    print("No messages found.")
 
 for message in messages:
     csv_path = extract_attachments_from_message(message["id"])
-
     if csv_path:
         try:
             raw_events = extract_events_from_csv_bytes(csv_path)
@@ -41,3 +42,5 @@ for message in messages:
 
         except Exception as e:
             print(f"Error processing CSV from message ID {message['id']}: {e}")
+    else:
+        print(f"No CSV found in message ID {message['id']}")
