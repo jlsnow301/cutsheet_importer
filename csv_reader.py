@@ -8,7 +8,7 @@ EXPECTED_HEADERS = [
     "Client/Organization",
     "Description",
     "Actual",
-    "Kitchen Ready by",
+    "Kitchen Ready by ",
     "Setup By",
     "Site Category",
     "Site Contact",
@@ -48,7 +48,7 @@ def parse_event(row):
     if "Date" in data:
         event_date = data["Date"]
 
-    if "Kitchen Ready by" in data and event_date:
+    if "Kitchen Ready by " in data and event_date:
         date_str = datetime.strptime(event_date, "%m/%d/%Y").strftime("%Y-%m-%d")
         combined_str = f"{date_str} {data['Kitchen Ready by']}"
         datetime_obj = datetime.strptime(combined_str, "%Y-%m-%d %I:%M %p")
