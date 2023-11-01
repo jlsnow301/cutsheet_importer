@@ -32,4 +32,6 @@ jobs:
       - name: Run script
         env:
           DELIVERY_PERSONS: ${{ secrets.DELIVERY_PERSONS }}
+          ALLOWED_EMAIL_DOMAIN: ${{ secrets.ALLOWED_EMAIL_DOMAIN }}
+          PERSONAL_EMAIL: ${{ secrets.PERSONAL_EMAIL }}
         run: python main.py
