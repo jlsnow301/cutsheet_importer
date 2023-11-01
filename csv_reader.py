@@ -50,7 +50,7 @@ def parse_event(row):
 
     if "Kitchen Ready by " in data and event_date:
         date_str = datetime.strptime(event_date, "%m/%d/%Y").strftime("%Y-%m-%d")
-        combined_str = f"{date_str} {data['Kitchen Ready by']}"
+        combined_str = f"{date_str} {data['Kitchen Ready by ']}"
         datetime_obj = datetime.strptime(combined_str, "%Y-%m-%d %I:%M %p")
         data["ready_by_time"] = datetime_obj.isoformat()
 
